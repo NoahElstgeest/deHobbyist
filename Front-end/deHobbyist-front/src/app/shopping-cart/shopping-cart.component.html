@@ -1,0 +1,25 @@
+<div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="bi bi-cart"></i> ({{ totalItems }})
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end p-3" style="width: 300px;">
+    <li *ngIf="cartItems.length === 0" class="text-center text-muted">Shopping cart empty</li>
+
+    <li *ngFor="let item of cartItems" class="dropdown-item">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ item.name }}</strong><br>
+          <small>${{ item.price }} x {{ item.quantity }}</small>
+        </div>
+        <span class="badge bg-secondary">${{ item.price * item.quantity }}</span>
+      </div>
+    </li>
+
+    <li *ngIf="cartItems.length > 0" class="dropdown-divider"></li>
+
+    <li *ngIf="cartItems.length > 0" class="dropdown-item text-center">
+      <strong>Total: ${{ totalPrice }}</strong>
+    </li>
+  </ul>
+</div>
+
