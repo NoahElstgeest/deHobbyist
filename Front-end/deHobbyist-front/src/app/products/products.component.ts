@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ProductDetailsModalComponent} from './product-details-modal/product-details-modal.component';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule],
+  imports: [CommonModule, NgbModule],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
 })
@@ -14,11 +16,12 @@ export class ProductsComponent {
   ];
 
   constructor(
-
+    private modalService: NgbModal
   ) {}
 
-  viewProduct(product: any) {
-    // Navigate to product detail page (implement routing)
+  viewDetails(product: any) {
+    const modalRef = this.modalService.open(ProductDetailsModalComponent);
+    modalRef.componentInstance.product = product;
   }
 
   addToCart(product: any) {
