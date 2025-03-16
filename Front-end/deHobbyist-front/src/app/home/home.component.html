@@ -1,1 +1,39 @@
-<p>home works!</p>
+<div class="container mt-4">
+  <!-- Hero Section -->
+  <div class="hero bg-primary text-white p-5 rounded text-center">
+    <h1>Welkom bij de Hobbyist!</h1>
+    <p>De nummer 1 online winkel for gespecialiseerde hobbies.</p>
+    <a class="btn btn-light btn-lg mt-3" routerLink="/products">Bekijk ons magazijn</a>
+  </div>
+
+  <!-- Featured Products -->
+  <h2 class="mt-5">Featured Products</h2>
+  <div class="row">
+    <div class="col-md-4" *ngFor="let product of featuredProducts">
+      <div class="card">
+        <img [src]="product.image" class="card-img-top" alt="{{ product.name }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">${{ product.price }}</p>
+          <button class="btn btn-primary">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customer Reviews -->
+  <h2 class="mt-5">Customer Reviews</h2>
+  <div class="card p-3">
+    <p>⭐⭐⭐⭐⭐ "Great products and fast shipping!" - John D.</p>
+    <p>⭐⭐⭐⭐⭐ "Amazing quality, will buy again!" - Sarah L.</p>
+  </div>
+
+  <!-- Newsletter Signup -->
+  <div class="newsletter bg-light p-4 mt-5 rounded text-center">
+    <h3>Subscribe to Our Newsletter</h3>
+    <p>Get updates on new products and special offers.</p>
+    <input type="email" class="form-control d-inline w-50" placeholder="Enter your email">
+    <button class="btn btn-primary mt-2">Subscribe</button>
+  </div>
+</div>
+
