@@ -15,13 +15,30 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" routerLink="products">Products</a>
+            <a class="nav-link" routerLink="products">Producten</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="about">About</a>
+            <a class="nav-link" routerLink="about">Over ons</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="contact">Contact</a>
+          </li>
+          <li *ngIf="isAdmin()" class="nav-item">
+            <a class="nav-link" routerLink="admin">Admin Portaal</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item" *ngIf="isLoggedIn()">
+            <a class="nav-link" routerLink="profile">Profiel</a>
+          </li>
+          <li class="nav-item" *ngIf="!isLoggedIn()">
+            <a class="nav-link" routerLink="login">Login</a>
+          </li>
+          <li class="nav-item" *ngIf="!isLoggedIn()">
+            <a class="nav-link" routerLink="register">Registreren</a>
+          </li>
+          <li class="nav-item" *ngIf="isLoggedIn()">
+            <a class="nav-link" (click)="logout()">Uitloggen</a>
           </li>
         </ul>
       </div>

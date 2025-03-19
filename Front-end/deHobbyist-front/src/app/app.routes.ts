@@ -1,6 +1,13 @@
 import { Routes } from '@angular/router';
 import {HomeComponent} from './home/home.component';
 import {ProductsComponent} from './products/products.component';
+import {authGuard} from './auth.guard';
+import {AdminComponent} from './admin/admin.component';
+import {AdminOrdersComponent} from './admin/admin-orders/admin-orders.component';
+import {AdminProductsComponent} from './admin/admin-products/admin-products.component';
+import {AdminUsersComponent} from './admin/admin-users/admin-users.component';
+import {RegisterComponent} from './register/register.component';
+import {LoginComponent} from './login/login.component';
 
 export const routes: Routes = [
   {
@@ -12,5 +19,38 @@ export const routes: Routes = [
     path: 'products',
     title: 'Producten',
     component: ProductsComponent
+  },
+  {
+    path: 'login',
+    title: 'Login',
+    component: LoginComponent
+  },
+  { path: 'register',
+    title: 'Registreren',
+    component: RegisterComponent
+  },
+  {
+    path: 'admin',
+    title: 'Admin Portaal',
+    component: AdminComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'admin/users',
+    title: 'Admin Portaal',
+    component: AdminUsersComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'admin/products',
+    title: 'Admin Portaal',
+    component: AdminProductsComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'admin/orders',
+    title: 'Admin Portaal',
+    component: AdminOrdersComponent,
+    canActivate: [authGuard]
   }
 ];
