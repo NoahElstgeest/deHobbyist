@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import {ApiService} from '../api.service';
 import {Router} from '@angular/router';
 import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })

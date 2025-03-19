@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import {Product} from '../../../api.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-create-product-modal',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './create-product-modal.component.html',
   styleUrl: './create-product-modal.component.scss'
 })

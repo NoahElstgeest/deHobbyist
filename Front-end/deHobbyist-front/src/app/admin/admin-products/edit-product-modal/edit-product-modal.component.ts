@@ -1,10 +1,11 @@
 import {Component, Input} from '@angular/core';
 import {Product} from '../../../api.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-edit-product-modal',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './edit-product-modal.component.html',
   styleUrl: './edit-product-modal.component.scss'
 })
