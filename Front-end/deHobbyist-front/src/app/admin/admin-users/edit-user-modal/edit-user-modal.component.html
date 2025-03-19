@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <h5 class="modal-title">Edit User</h5>
+  <button type="button" class="btn-close" (click)="cancel()" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+  <label>Username:</label>
+  <input [(ngModel)]="user.username" class="form-control mb-2" />
+
+  <label>Email:</label>
+  <input [(ngModel)]="user.email" class="form-control mb-2" />
+
+  <label>Role:</label>
+  <select [(ngModel)]="user.role" class="form-control">
+    <option value="USER">User</option>
+    <option value="ADMIN">Admin</option>
+  </select>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancel()">Close</button>
+  <button type="button" class="btn btn-primary" (click)="saveChanges()">Save Changes</button>
+</div>

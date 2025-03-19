@@ -1,0 +1,39 @@
+<div class="container mt-4">
+  <h2>Manage Orders</h2>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <table class="table table-striped mt-3">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Customer Name</th>
+      <th>Total Amount</th>
+      <th>Status</th>
+      <th>Created At</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let order of orders">
+      <td>{{ order.id }}</td>
+      <td>{{ order.customerName }}</td>
+      <td>${{ order.totalAmount }}</td>
+      <td>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            {{ order.status }}
+          </button>
+          <ul class="dropdown-menu">
+            <li *ngFor="let status of orderStatuses">
+              <a class="dropdown-item" href="#" (click)="updateOrderStatus(order, status)">{{ status }}</a>
+            </li>
+          </ul>
+        </div>
+      </td>
+      <td>{{ order.createdAt | date:'short' }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
