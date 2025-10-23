@@ -20,6 +20,12 @@ public class JwtFilter extends OncePerRequestFilter {
     private final UserDao userDao;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        return path.startsWith("/api/auth/") || "OPTIONS".equalsIgnoreCase(request.getMethod());
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
@@ -39,7 +45,6 @@ public class JwtFilter extends OncePerRequestFilter {
                     }
                 }
             } catch (Exception e) {
-                // Log the error to avoid crashing the filter
                 System.out.println("JWT Authentication failed: " + e.getMessage());
             }
         }
