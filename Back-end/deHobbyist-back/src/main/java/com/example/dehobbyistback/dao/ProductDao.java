@@ -20,6 +20,10 @@ public class ProductDao {
         return productRepository.findById(id);
     }
 
+    public List<Product> findLatestProducts() {
+        return productRepository.findTop3ByOrderByIdDesc();
+    }
+
     public List<Product> searchProductsByName(String name) {
         return productRepository.findByNameContaining(name);
     }
@@ -30,5 +34,9 @@ public class ProductDao {
 
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    public void deleteAllProducts() {
+        productRepository.deleteAll();
     }
 }

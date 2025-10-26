@@ -3,6 +3,8 @@ package com.example.dehobbyistback.controller;
 import com.example.dehobbyistback.dao.ProductDao;
 import com.example.dehobbyistback.model.Product;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,14 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductDao productDao;
 
     @GetMapping
-    @PreAuthorize("permitAll()")
     public List<Product> getAllProducts() {
         return productDao.getAllProducts();
     }
@@ -27,15 +27,20 @@ public class ProductController {
         return productDao.getProductById(id).orElse(null);
     }
 
+    @GetMapping("/latest")
+    public List<Product> getLatestProducts() {
+        return productDao.findLatestProducts();
+    }
+
     @GetMapping("/search")
-    @PreAuthorize("permitAll()")
     public List<Product> searchProducts(@RequestParam String name) {
         return productDao.searchProductsByName(name);
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productDao.saveProduct(product);
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        productDao.saveProduct(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
     @PutMapping("/{id}")

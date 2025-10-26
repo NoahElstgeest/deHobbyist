@@ -16,19 +16,19 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name="name", nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false, length = 1000)
+    @Column(name="description", nullable = false, length = 1000)
     private String description;
 
-    @Column(nullable = false)
+    @Column(name="price", nullable = false)
     private BigDecimal price;
 
-    @Column(nullable = false)
+    @Column(name="stock", nullable = false)
     private int stock;
 
-    @Column(nullable = true)
+    @Column(name="image_url")
     private String imageUrl;
 
     public Product(String name, String description, BigDecimal price, int stock, String imageUrl) {
