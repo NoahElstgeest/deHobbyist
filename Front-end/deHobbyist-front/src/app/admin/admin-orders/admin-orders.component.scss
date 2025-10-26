@@ -1,0 +1,22 @@
+:root { --brown: #6b4f3a; }
+.text-brown { color: var(--brown) !important; }
+
+.btn-outline-dark:hover { background-color: #000; color: #fff; }
+
+.address-cell {
+  max-width: 360px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+.text-truncate {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn.btn-sm.btn-outline-dark.dropdown-toggle {
+  white-space: nowrap;
+}
