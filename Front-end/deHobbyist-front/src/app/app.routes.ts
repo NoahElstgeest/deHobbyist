@@ -8,6 +8,9 @@ import {AdminProductsComponent} from './admin/admin-products/admin-products.comp
 import {AdminUsersComponent} from './admin/admin-users/admin-users.component';
 import {RegisterComponent} from './register/register.component';
 import {LoginComponent} from './login/login.component';
+import {ProfileComponent} from './profile/profile.component';
+import {CheckoutComponent} from './checkout/checkout.component';
+import {MyOrdersComponent} from './profile/my-orders/my-orders.component';
 
 export const routes: Routes = [
   {
@@ -33,24 +36,49 @@ export const routes: Routes = [
     path: 'admin',
     title: 'Admin Portaal',
     component: AdminComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    data: { roles: ['ADMIN'] }
   },
   {
     path: 'admin/users',
     title: 'Admin Portaal',
     component: AdminUsersComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    data: { roles: ['ADMIN'] }
   },
   {
     path: 'admin/products',
     title: 'Admin Portaal',
     component: AdminProductsComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    data: { roles: ['ADMIN'] }
   },
   {
     path: 'admin/orders',
     title: 'Admin Portaal',
     component: AdminOrdersComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    data: { roles: ['ADMIN'] }
+  },
+  {
+    path: 'profile',
+    title: 'Profiel',
+    component: ProfileComponent,
+    canActivate: [authGuard],
+    data: { roles: ['CUSTOMER', 'ADMIN'] }
+  },
+  {
+    path: 'profile/orders',
+    title: 'Mijn Orders',
+    component: MyOrdersComponent,
+    canActivate: [authGuard],
+    data: { roles: ['CUSTOMER', 'ADMIN'] }
+  },
+  {
+    path: 'checkout',
+    title: 'Checkout',
+    component: CheckoutComponent,
+    canActivate: [authGuard],
+    data: { roles: ['CUSTOMER', 'ADMIN'] }
   }
 ];
