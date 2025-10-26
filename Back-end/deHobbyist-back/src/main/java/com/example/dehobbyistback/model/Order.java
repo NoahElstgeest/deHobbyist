@@ -23,7 +23,7 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
     @Column(nullable = false)
@@ -35,4 +35,10 @@ public class Order {
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(name = "shipping_address", nullable = false)
+    private String shippingAddress;
+
+    @Column(name = "billing_address", nullable = false)
+    private String billingAddress;
 }
