@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ProductDetailsModalComponent} from './product-details-modal/product-details-modal.component';
+import {ApiService} from '../api.service';
+import {CartService} from '../cart.service';
+import {Product} from '../models/product';
 
 @Component({
   selector: 'app-products',
@@ -9,22 +12,36 @@ import {ProductDetailsModalComponent} from './product-details-modal/product-deta
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
 })
-export class ProductsComponent {
-  products = [
-    { id: 1, name: 'Brei wol', price: 29.99, image: 'https://media.s-bol.com/B61ZL79VyylQ/550x407.jpg' },
-    { id: 2, name: 'Product 2', price: 39.99, image: 'assets/images/product2.jpg' },
-  ];
+export class ProductsComponent implements OnInit{
+  products: Product[] = [];
 
   constructor(
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private apiService: ApiService,
+    private cart: CartService
   ) {}
+
+  ngOnInit() {
+    this.loadProducts();
+  }
 
   viewDetails(product: any) {
     const modalRef = this.modalService.open(ProductDetailsModalComponent);
     modalRef.componentInstance.product = product;
   }
 
-  addToCart(product: any) {
-    // Add product to cart service
+  loadProducts(): void {
+    this.apiService.getProducts().subscribe({
+      next: (data: Product[]) => {
+        this.products = data;
+      },
+      error: (err) => {
+        console.error("❌ Error fetching products:", err);
+      }
+    });
+  }
+
+  addToCart(p: Product) {
+    this.cart.add(p, 1);
   }
 }

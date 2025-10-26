@@ -4,19 +4,17 @@
 </div>
 
 <div class="modal-body">
-  <img [src]="product.image" class="img-fluid mb-3" [alt]="product.name">
+  <img [src]="product.imageUrl" class="img-fluid mb-3" [alt]="product.name">
   <p>{{ product.description }}</p>
-  <p><strong>Prijs:</strong> ${{ product.price }}</p>
-  <p><strong>Merk:</strong> Ice yarns</p>
+  <p><strong>Prijs:</strong> {{ product.price | currency:'EUR' }}</p>
 
   <div class="mb-3">
     <label for="quantity">Quantity:</label>
-    <input type="number" id="quantity" class="form-control" min="1">
+    <input type="number" id="quantity" class="form-control" min="1" [(ngModel)]="qty">
   </div>
 </div>
 
 <div class="modal-footer">
-  <button class="btn btn-primary" (click)="activeModal.close()">Add to Cart</button>
+  <button class="btn btn-primary" (click)="addToCartAndClose()">Add to Cart</button>
   <button class="btn btn-secondary" (click)="activeModal.dismiss()">Close</button>
 </div>
-

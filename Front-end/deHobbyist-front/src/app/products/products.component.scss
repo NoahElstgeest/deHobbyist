@@ -1,0 +1,43 @@
+:root {
+  --brown: #6b4f3a;
+  --brown-subtle: #c9b7a9;
+}
+
+/* consistent card design */
+.product-card {
+  height: 420px; /* fixed height for all product cards */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: .75rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+/* image size and alignment */
+.product-image {
+  height: 200px;          /* uniform height for all images */
+  object-fit: cover;      /* crop images instead of stretching */
+  border-top-left-radius: .75rem;
+  border-top-right-radius: .75rem;
+}
+
+/* color utilities */
+.text-brown { color: var(--brown) !important; }
+
+.btn-dark {
+  background-color: #000;
+  border-color: #000;
+}
+.btn-dark:hover {
+  background-color: #222;
+  border-color: #222;
+}
+.btn-outline-dark:hover {
+  background-color: #000;
+  color: #fff;
+}
