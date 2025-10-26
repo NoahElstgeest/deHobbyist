@@ -20,18 +20,24 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(name="username", unique = true, nullable = false)
     private String username;
 
-    @Column(nullable = false, unique = true)
+    @Column(name="email", nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name="password", nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name="role", nullable = false)
     private Role role;
+
+    @Column(name = "shipping_address")
+    private String shippingAddress;
+
+    @Column(name = "billing_address")
+    private String billingAddress;
 
     public User(String username, String email, String password, Role role) {
         this.username = username;

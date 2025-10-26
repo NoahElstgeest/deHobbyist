@@ -2,6 +2,7 @@ package com.example.dehobbyistback.dao;
 
 import com.example.dehobbyistback.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,6 +30,8 @@ public class UserDao implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
+    public Optional<User> findByEmail(String email) {return userRepository.findByEmail(email);}
+
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -36,6 +39,10 @@ public class UserDao implements UserDetailsService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public void deleteAllUsers() {
+        userRepository.deleteAll();
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

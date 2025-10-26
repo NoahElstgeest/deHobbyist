@@ -5,55 +5,68 @@ import com.example.dehobbyistback.dao.UserRepository;
 import com.example.dehobbyistback.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
-@PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 public class UserController {
     private final UserDao userDao;
 
-    // Get all users (Admin only)
+    @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<User> getCurrentUser(Authentication auth) {
+        String username = auth.getName();
+        User user = userDao.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return ResponseEntity.ok(user);
+    }
+
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
 
-    // Get a user by ID (Admin only)
     @GetMapping("/{id}")
+    @PreAuthorize("#id == authentication.principal.id or hasAuthority('ADMIN')")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userDao.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Update a user (Admin only)
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+    @PreAuthorize("#id == authentication.principal.id or hasAuthority('ADMIN')")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         Optional<User> userOptional = userDao.getUserById(id);
         if (userOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
         User user = userOptional.get();
-        user.setUsername(updatedUser.getUsername());
-        user.setEmail(updatedUser.getEmail());
+        if (updatedUser.getUsername() != null)        user.setUsername(updatedUser.getUsername());
+        if (updatedUser.getEmail() != null)           user.setEmail(updatedUser.getEmail());
+        if (updatedUser.getRole() != null)           user.setRole(updatedUser.getRole());
+        if (updatedUser.getShippingAddress() != null) user.setShippingAddress(updatedUser.getShippingAddress());
+        if (updatedUser.getBillingAddress() != null)  user.setBillingAddress(updatedUser.getBillingAddress());
         userDao.saveUser(user);
 
-        return ResponseEntity.ok("User updated successfully.");
+        return ResponseEntity.ok(Map.of("message", "User updated successfully."));
     }
 
-    // Delete a user (Admin only)
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         if (userDao.getUserById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         userDao.deleteUser(id);
-        return ResponseEntity.ok("User deleted successfully.");
+        return ResponseEntity.noContent().build();
     }
 }
