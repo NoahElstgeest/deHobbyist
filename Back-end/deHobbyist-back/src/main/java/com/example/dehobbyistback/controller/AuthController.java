@@ -1,10 +1,12 @@
 package com.example.dehobbyistback.controller;
 
 import com.example.dehobbyistback.dao.UserDao;
+import com.example.dehobbyistback.model.Role;
 import com.example.dehobbyistback.model.User;
 import com.example.dehobbyistback.config.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,7 +41,8 @@ public class AuthController {
 
             return ResponseEntity.ok(Map.of(
                     "token", token,
-                    "role", user.getRole().name()
+                    "role", user.getRole().name(),
+                    "id", user.getId()
             ));
 
         } catch (AuthenticationException e) {
@@ -50,14 +53,26 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody User user) {
+    public ResponseEntity<Map<String, Object>> registerUser(@RequestBody User user) {
         if (userDao.findByUsername(user.getUsername()).isPresent()) {
-            return ResponseEntity.badRequest().body("Username already taken.");
+            return ResponseEntity
+                    .badRequest()
+                    .body(Map.of("message", "Username already taken."));
         }
 
-        user.setPassword(userDao.loadUserByUsername(user.getUsername()).getPassword());
+        if (userDao.findByEmail(user.getEmail()).isPresent()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(Map.of("message", "Email already in use."));
+        }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        user.setRole(Role.CUSTOMER);
+
         userDao.saveUser(user);
 
-        return ResponseEntity.ok("User registered successfully.");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("message", "User registered successfully"));
     }
 }
