@@ -1,0 +1,18 @@
+:root {
+  --brown: #6b4f3a;
+}
+
+.text-brown { color: var(--brown) !important; }
+
+.profile-card {
+  max-width: 720px;
+  border-radius: .75rem;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.btn-dark { background-color: #000; border-color: #000; }
+.btn-dark:hover { background-color: #222; border-color: #222; }
