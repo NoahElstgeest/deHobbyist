@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {map, Observable} from 'rxjs';
+import {CartService} from '../cart.service';
+import {Router, RouterLink} from '@angular/router';
 
 interface CartItem {
   name: string;
@@ -9,21 +12,37 @@ interface CartItem {
 
 @Component({
   selector: 'app-shopping-cart',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './shopping-cart.component.html',
   styleUrl: './shopping-cart.component.scss'
 })
 export class ShoppingCartComponent {
-  cartItems: CartItem[] = [
-    { name: 'Product 1', price: 19.99, quantity: 1 },
-    { name: 'Product 2', price: 29.99, quantity: 2 }
-  ];
+  cartItems$!: Observable<Array<{ id: number; name: string; price: number; quantity: number }>>;
+  totalItems$!: Observable<number>;
+  totalPrice$!: Observable<number>;
 
-  get totalItems(): number {
-    return this.cartItems.reduce((total, item) => total + item.quantity, 0);
+  constructor(private cart: CartService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.cartItems$ = this.cart.items$.pipe(
+      map(items => items.map(it => ({
+        id: it.product.id,
+        name: it.product.name,
+        price: it.product.price,
+        quantity: it.qty
+      })))
+    );
+    this.totalItems$ = this.cart.count$;
+    this.totalPrice$ = this.cart.total$;
   }
 
-  get totalPrice(): number {
-    return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  inc(id: number)    { this.cart.setQty(id, this.safeQty(id) + 1); }
+  dec(id: number)    { this.cart.setQty(id, this.safeQty(id) - 1); }
+  remove(id: number) { this.cart.remove(id); }
+
+  private safeQty(id: number): number {
+    let q = 0;
+    this.cart['_state$'].value.items.forEach(i => { if (i.product.id === id) q = i.qty; });
+    return q;
   }
 }

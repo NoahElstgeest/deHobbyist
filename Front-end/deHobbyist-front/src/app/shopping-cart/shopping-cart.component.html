@@ -1,25 +1,39 @@
-<div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <i class="bi bi-cart"></i> ({{ totalItems }})
+<div class="dropdown" data-bs-auto-close="outside">
+  <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="bi bi-cart"></i>
+    (<span>{{ (totalItems$ | async) ?? 0 }}</span>)
   </button>
-  <ul class="dropdown-menu dropdown-menu-end p-3" style="width: 300px;">
-    <li *ngIf="cartItems.length === 0" class="text-center text-muted">Shopping cart empty</li>
 
-    <li *ngFor="let item of cartItems" class="dropdown-item">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <strong>{{ item.name }}</strong><br>
-          <small>${{ item.price }} x {{ item.quantity }}</small>
+  <ul class="dropdown-menu dropdown-menu-end p-3 cart-menu"
+      (click)="$event.stopPropagation()">
+    <ng-container *ngIf="(cartItems$ | async) as cartItems">
+      <li *ngIf="cartItems.length === 0" class="text-center text-muted">Winkelwagen is leeg</li>
+
+      <li *ngFor="let item of cartItems" class="dropdown-item py-2">
+        <div class="d-flex align-items-center">
+          <!-- Product name + price/qty -->
+          <div class="flex-grow-1 min-w-0 pe-2">
+            <strong class="d-block text-truncate" title="{{ item.name }}">{{ item.name }}</strong>
+            <small class="text-muted">{{ item.price | currency:'EUR' }} × {{ item.quantity }}</small>
+          </div>
+
+          <!-- Increment/decrement controls -->
+          <div class="d-flex align-items-center gap-2 flex-shrink-0">
+            <button class="btn btn-sm btn-outline-secondary" (click)="dec(item.id)">−</button>
+            <span class="badge bg-secondary">{{ (item.price * item.quantity) | currency:'EUR' }}</span>
+            <button class="btn btn-sm btn-outline-secondary" (click)="inc(item.id)">+</button>
+          </div>
         </div>
-        <span class="badge bg-secondary">${{ item.price * item.quantity }}</span>
-      </div>
-    </li>
+      </li>
 
-    <li *ngIf="cartItems.length > 0" class="dropdown-divider"></li>
+      <li *ngIf="cartItems.length > 0" class="dropdown-divider my-2"></li>
 
-    <li *ngIf="cartItems.length > 0" class="dropdown-item text-center">
-      <strong>Total: ${{ totalPrice }}</strong>
-    </li>
+      <li *ngIf="cartItems.length > 0" class="dropdown-item p-0">
+        <div class="text-end mb-2">
+          <strong>Totaal: {{ (totalPrice$ | async) | currency:'EUR' }}</strong>
+        </div>
+        <a class="btn btn-dark w-100" routerLink="/checkout">Afrekenen</a>
+      </li>
+    </ng-container>
   </ul>
 </div>
-

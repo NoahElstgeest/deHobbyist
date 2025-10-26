@@ -1,0 +1,8 @@
+.cart-menu {
+  width: 360px;
+  max-width: calc(100vw - 2rem);
+  border-radius: .75rem;
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+}
+
+.min-w-0 { min-width: 0 !important; }
