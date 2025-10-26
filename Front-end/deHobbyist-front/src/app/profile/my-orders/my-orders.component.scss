@@ -1,0 +1,11 @@
+:root { --brown: #6b4f3a; }
+.text-brown { color: var(--brown) !important; }
+
+.btn-outline-dark:hover { background-color: #000; color: #fff; }
+
+.product-cell {
+  max-width: 320px;
+}
+@media (max-width: 576px) {
+  .product-cell { max-width: 180px; }
+}
