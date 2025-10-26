@@ -1,66 +1,66 @@
 import { Component } from '@angular/core';
-import {ApiService, Product} from '../../api.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ApiService} from '../../api.service';
+import {NgbModal, NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {CommonModule} from '@angular/common';
 import {EditProductModalComponent} from './edit-product-modal/edit-product-modal.component';
 import {CreateProductModalComponent} from './create-product-modal/create-product-modal.component';
+import {Product} from '../../models/product';
+import {FormsModule} from '@angular/forms';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-admin-products',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, NgbModalModule, RouterLink],
   templateUrl: './admin-products.component.html',
   styleUrl: './admin-products.component.scss'
 })
 export class AdminProductsComponent {
   products: Product[] = [];
-  errorMessage: string = '';
+  loading = false;
+  errorMessage = '';
 
-  constructor(private apiService: ApiService, private modalService: NgbModal) {}
+  constructor(private api: ApiService, private modal: NgbModal) {}
 
-  ngOnInit(): void {
-    this.loadProducts();
-  }
+  ngOnInit(): void { this.loadProducts(); }
 
   loadProducts(): void {
-    this.apiService.getProducts().subscribe({
-      next: (data) => this.products = data,
-      error: () => this.errorMessage = 'Error fetching products'
+    this.loading = true;
+    this.errorMessage = '';
+    this.api.getProducts().subscribe({
+      next: data => { this.products = data; this.loading = false; },
+      error: () => { this.errorMessage = 'Error fetching products'; this.loading = false; }
     });
   }
 
+  trackById = (_: number, p: Product) => p.id;
+
   openEditModal(product: Product): void {
-    const modalRef = this.modalService.open(EditProductModalComponent, { centered: true });
+    const modalRef = this.modal.open(EditProductModalComponent, { centered: true, size: 'md' });
     modalRef.componentInstance.product = { ...product };
 
-    modalRef.result.then((updatedProduct) => {
-      if (updatedProduct) {
-        this.apiService.updateProduct(updatedProduct.id, updatedProduct).subscribe({
-          next: () => this.loadProducts(),
-          error: () => this.errorMessage = 'Error updating product'
-        });
-      }
-    }).catch(() => {});
+    modalRef.closed.subscribe((updated: Product) => {
+      this.api.updateProduct(updated.id, updated).subscribe({
+        next: () => this.loadProducts(),
+        error: () => this.errorMessage = 'Error updating product'
+      });
+    });
   }
 
   openCreateModal(): void {
-    const modalRef = this.modalService.open(CreateProductModalComponent, { centered: true });
-
-    modalRef.result.then((newProduct) => {
-      if (newProduct) {
-        this.apiService.addProduct(newProduct).subscribe({
-          next: () => this.loadProducts(),
-          error: () => this.errorMessage = 'Error creating product'
-        });
-      }
-    }).catch(() => {});
+    const modalRef = this.modal.open(CreateProductModalComponent, { centered: true, size: 'md' });
+    modalRef.closed.subscribe((created: Omit<Product, 'id'>) => {
+      this.api.addProduct(created).subscribe({
+        next: () => this.loadProducts(),
+        error: () => this.errorMessage = 'Error creating product'
+      });
+    });
   }
 
   deleteProduct(productId: number): void {
-    if (confirm('Are you sure you want to delete this product?')) {
-      this.apiService.deleteProduct(productId).subscribe({
-        next: () => this.products = this.products.filter(product => product.id !== productId),
-        error: () => this.errorMessage = 'Error deleting product'
-      });
-    }
+    if (!confirm('Are you sure you want to delete this product?')) return;
+    this.api.deleteProduct(productId).subscribe({
+      next: () => this.products = this.products.filter(p => p.id !== productId),
+      error: () => this.errorMessage = 'Error deleting product'
+    });
   }
 }

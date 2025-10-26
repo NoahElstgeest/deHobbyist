@@ -1,35 +1,54 @@
 <div class="container mt-4">
-  <h2>Manage Products</h2>
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <h2 class="mb-0 text-brown">Producten beheren</h2>
 
-  <div class="d-flex justify-content-between mb-3">
-    <button class="btn btn-success" (click)="openCreateModal()">Create New Product</button>
+    <div class="d-flex gap-2">
+      <a routerLink="/admin" class="btn btn-outline-dark btn-sm">
+        ← Terug naar dashboard
+      </a>
+      <button class="btn btn-success btn-sm" (click)="openCreateModal()">+ Nieuw product</button>
+    </div>
   </div>
 
-  <div *ngIf="errorMessage" class="alert alert-danger">
-    {{ errorMessage }}
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border" role="status" aria-label="Laden"></div>
   </div>
 
-  <table class="table table-striped mt-3">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Price</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let product of products">
-      <td>{{ product.id }}</td>
-      <td>{{ product.name }}</td>
-      <td>{{ product.description }}</td>
-      <td>${{ product.price }}</td>
-      <td>
-        <button class="btn btn-warning btn-sm me-2" (click)="openEditModal(product)">Edit</button>
-        <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.id)">Delete</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <ng-container *ngIf="!loading && !errorMessage">
+    <div *ngIf="products.length === 0" class="alert alert-info mt-3">
+      Geen producten gevonden.
+    </div>
+
+    <div class="table-responsive mt-3" *ngIf="products.length">
+      <table class="table table-striped align-middle">
+        <thead class="table-light">
+        <tr>
+          <th style="width: 80px;">ID</th>
+          <th style="min-width: 200px;">Naam</th>
+          <th style="min-width: 280px;">Beschrijving</th>
+          <th class="text-end" style="width: 120px;">Prijs</th>
+          <th class="text-end" style="width: 200px;">Acties</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let product of products; trackBy: trackById">
+          <td>{{ product.id }}</td>
+          <td class="text-truncate" title="{{ product.name }}">{{ product.name }}</td>
+          <td class="text-truncate" style="max-width: 360px;" title="{{ product.description }}">
+            {{ product.description }}
+          </td>
+          <td class="text-end">{{ product.price | currency:'EUR' }}</td>
+          <td class="text-end">
+            <div class="d-inline-flex flex-wrap justify-content-end gap-2">
+              <button class="btn btn-warning btn-sm" (click)="openEditModal(product)">Bewerken</button>
+              <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.id)">Verwijderen</button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
 </div>
