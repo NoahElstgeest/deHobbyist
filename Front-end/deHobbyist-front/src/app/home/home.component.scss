@@ -1,13 +1,39 @@
-.hero {
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+:root {
+  --brown: #4e2d15;
+  --brown-subtle: #b89b82;
 }
 
-.card {
-  margin-top: 20px;
+.text-brown { color: var(--brown) !important; }
+.border-brown-subtle { border-color: var(--brown-subtle) !important; }
+
+.btn-brown {
+  color: #fff;
+  background-color: #000;
+  border-color: #000;
 }
 
-.newsletter {
-  max-width: 600px;
-  margin: auto;
+.btn-brown:hover,
+.btn-brown:focus {
+  background-color: #222;
+  border-color: #222;
+}
+
+.btn-outline-brown {
+  color: var(--brown);
+  background-color: transparent;
+  border: 1px solid var(--brown);
+}
+.btn-outline-brown:hover,
+.btn-outline-brown:focus {
+  color: #fff;
+  background-color: var(--brown);
+  border-color: var(--brown);
+}
+
+.hover-lift {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.08) !important;
 }

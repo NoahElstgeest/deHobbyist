@@ -1,39 +1,25 @@
 <div class="container mt-4">
-  <!-- Hero Section -->
-  <div class="hero bg-primary text-white p-5 rounded text-center">
-    <h1>Welkom bij de Hobbyist!</h1>
-    <p>De nummer 1 online winkel for gespecialiseerde hobbies.</p>
-    <a class="btn btn-light btn-lg mt-3" routerLink="/products">Bekijk ons magazijn</a>
+  <div class="hero bg-light text-brown p-5 rounded-4 text-center shadow-sm border border-2 border-brown-subtle">
+    <h1 class="fw-bold mb-2">Welkom bij De Hobbyist!</h1>
+    <p class="mb-3">Dé nummer 1 online winkel voor gespecialiseerde hobby's.</p>
+    <a class="btn btn-brown btn-lg mt-2" routerLink="products">Bekijk ons assortiment</a>
   </div>
 
-  <!-- Featured Products -->
-  <h2 class="mt-5">Featured Products</h2>
-  <div class="row">
+  <div class="d-flex align-items-center justify-content-between mt-5 mb-3">
+    <h2 class="h4 m-0 text-brown">Uitgelichte producten</h2>
+    <a class="btn btn-sm" routerLink="products">Alles bekijken</a>
+  </div>
+
+  <div class="row g-4">
     <div class="col-md-4" *ngFor="let product of featuredProducts">
-      <div class="card">
-        <img [src]="product.image" class="card-img-top" alt="{{ product.name }}">
-        <div class="card-body">
-          <h5 class="card-title">{{ product.name }}</h5>
-          <p class="card-text">${{ product.price }}</p>
-          <button class="btn btn-primary">Add to Cart</button>
+      <div class="card h-100 shadow-sm border-0 hover-lift">
+        <img [src]="product.imageUrl" class="card-img-top" [alt]="product.name">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title text-brown mb-2">{{ product.name }}</h5>
+          <p class="card-text text-muted mb-4">€{{ product.price | number:'1.2-2' }}</p>
+          <button class="btn btn-brown mt-auto" (click)="addToCart(product)">In winkelwagen</button>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Customer Reviews -->
-  <h2 class="mt-5">Customer Reviews</h2>
-  <div class="card p-3">
-    <p>⭐⭐⭐⭐⭐ "Great products and fast shipping!" - John D.</p>
-    <p>⭐⭐⭐⭐⭐ "Amazing quality, will buy again!" - Sarah L.</p>
-  </div>
-
-  <!-- Newsletter Signup -->
-  <div class="newsletter bg-light p-4 mt-5 rounded text-center">
-    <h3>Subscribe to Our Newsletter</h3>
-    <p>Get updates on new products and special offers.</p>
-    <input type="email" class="form-control d-inline w-50" placeholder="Enter your email">
-    <button class="btn btn-primary mt-2">Subscribe</button>
-  </div>
 </div>
-
