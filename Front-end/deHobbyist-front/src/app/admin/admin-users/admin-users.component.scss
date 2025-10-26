@@ -1,0 +1,16 @@
+:root { --brown: #6b4f3a; }
+.text-brown { color: var(--brown) !important; }
+
+.btn-outline-dark:hover { background-color: #000; color: #fff; }
+
+.cell-truncate {
+  max-width: 280px;
+}
+@media (max-width: 768px) {
+  .cell-truncate { max-width: 180px; }
+}
+
+.role-badge {
+  font-weight: 600;
+  letter-spacing: .2px;
+}

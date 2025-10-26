@@ -1,31 +1,56 @@
 <div class="container mt-4">
-  <h2>Manage Users</h2>
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <h2 class="mb-0 text-brown">Gebruikers beheren</h2>
 
-  <div *ngIf="errorMessage" class="alert alert-danger">
-    {{ errorMessage }}
+    <div class="d-flex gap-2">
+      <a routerLink="/admin" class="btn btn-outline-dark btn-sm">
+        ← Terug naar dashboard
+      </a>
+      <button class="btn btn-outline-dark btn-sm" (click)="loadUsers()">↻ Vernieuwen</button>
+    </div>
   </div>
 
-  <table class="table table-striped mt-3">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Username</th>
-      <th>Email</th>
-      <th>Role</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let user of users">
-      <td>{{ user.id }}</td>
-      <td>{{ user.username }}</td>
-      <td>{{ user.email }}</td>
-      <td>{{ user.role }}</td>
-      <td>
-        <button class="btn btn-warning btn-sm me-2" (click)="openEditModal(user)">Edit</button>
-        <button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">Delete</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border" role="status" aria-label="Laden"></div>
+  </div>
+
+  <ng-container *ngIf="!loading && !errorMessage">
+    <div *ngIf="users.length === 0" class="alert alert-info mt-3">Geen gebruikers gevonden.</div>
+
+    <div class="table-responsive mt-3" *ngIf="users.length">
+      <table class="table table-striped align-middle">
+        <thead class="table-light">
+        <tr>
+          <th style="width: 80px;">ID</th>
+          <th style="min-width: 160px;">Gebruikersnaam</th>
+          <th style="min-width: 220px;">E-mailadres</th>
+          <th style="width: 140px;">Rol</th>
+          <th class="text-end" style="width: 200px;">Acties</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of users; trackBy: trackById">
+          <td>{{ user.id }}</td>
+          <td class="text-truncate cell-truncate" title="{{ user.username }}">{{ user.username }}</td>
+          <td class="text-truncate cell-truncate" title="{{ user.email }}">{{ user.email }}</td>
+          <td>
+              <span class="badge role-badge"
+                    [class.bg-dark]="user.role === 'ADMIN'"
+                    [class.bg-secondary]="user.role === 'CUSTOMER'">
+                {{ user.role }}
+              </span>
+          </td>
+          <td class="text-end">
+            <div class="d-inline-flex flex-wrap justify-content-end gap-2">
+              <button class="btn btn-warning btn-sm" (click)="openEditModal(user)">Bewerken</button>
+              <button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">Verwijderen</button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
 </div>
