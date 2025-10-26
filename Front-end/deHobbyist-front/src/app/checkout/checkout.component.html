@@ -1,0 +1,93 @@
+<div class="container my-5" *ngIf="!success; else ok">
+  <h2 class="mb-4 text-center text-brown">Afrekenen</h2>
+
+  <div *ngIf="lines.length === 0" class="alert alert-info text-center">
+    Uw winkelwagen is leeg.
+  </div>
+
+  <form #checkoutForm="ngForm" (ngSubmit)="placeOrder()">
+    <h4 class="mt-4 text-brown">Verzend- &amp; factuurgegevens</h4>
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Verzendadres <span class="text-danger">*</span></label>
+        <textarea
+          class="form-control"
+          name="shippingAddress"
+          [(ngModel)]="shippingAddress"
+          required
+          rows="3"
+          placeholder="Straatnaam 1, 1234 AB, Plaats"></textarea>
+        <div class="form-text text-danger" *ngIf="checkoutForm.submitted && !shippingAddress?.trim()">
+          Verzendadres is verplicht.
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Factuuradres <span class="text-danger">*</span></label>
+        <textarea
+          class="form-control"
+          name="billingAddress"
+          [(ngModel)]="billingAddress"
+          required
+          rows="3"
+          placeholder="Straatnaam 1, 1234 AB, Plaats"></textarea>
+        <div class="form-text text-danger" *ngIf="checkoutForm.submitted && !billingAddress?.trim()">
+          Factuuradres is verplicht.
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="lines.length">
+      <div class="table-responsive mb-4 mt-3">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+          <tr>
+            <th>Product</th>
+            <th class="text-end">Prijs</th>
+            <th class="text-center">Aantal</th>
+            <th class="text-end">Subtotaal</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let l of lines">
+            <td class="text-truncate" style="max-width: 360px;" title="{{ l.product.name }}">{{ l.product.name }}</td>
+            <td class="text-end">{{ l.product.price | currency:'EUR' }}</td>
+            <td class="text-center">{{ l.qty }}</td>
+            <td class="text-end">{{ (l.product.price * l.qty) | currency:'EUR' }}</td>
+          </tr>
+          </tbody>
+          <tfoot>
+          <tr class="table-secondary">
+            <th colspan="3" class="text-end">Totaal:</th>
+            <th class="text-end">{{ total | currency:'EUR' }}</th>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center gap-2">
+        <a routerLink="/products" class="btn btn-outline-dark">Verder winkelen</a>
+
+        <button
+          type="submit"
+          class="btn btn-dark px-4"
+          [disabled]="placingOrder || !shippingAddress?.trim() || !billingAddress?.trim()"
+          [attr.aria-busy]="placingOrder ? 'true' : null">
+          <span *ngIf="!placingOrder">Bestelling plaatsen</span>
+          <span *ngIf="placingOrder" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <span *ngIf="placingOrder">Bezig met plaatsen…</span>
+        </button>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+    </div>
+  </form>
+</div>
+
+<ng-template #ok>
+  <div class="container text-center my-5">
+    <div class="alert alert-success">Bestelling succesvol geplaatst!</div>
+    <button class="btn btn-dark" routerLink="/products">Verder winkelen</button>
+  </div>
+</ng-template>
