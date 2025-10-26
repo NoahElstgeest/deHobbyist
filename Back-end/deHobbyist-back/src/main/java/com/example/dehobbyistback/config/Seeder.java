@@ -17,7 +17,6 @@ import java.util.List;
 public class Seeder {
     private final UserDao userDao;
     private final ProductDao productDao;
-    private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void seedDatabase() {
