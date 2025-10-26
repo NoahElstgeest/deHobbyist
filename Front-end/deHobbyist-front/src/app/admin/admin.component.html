@@ -1,15 +1,24 @@
 <div class="container mt-4">
-  <h2>Admin Dashboard</h2>
+  <h2 class="text-brown mb-4 text-center">Admin-dashboard</h2>
 
-  <div class="row">
+  <div class="row g-3">
     <div class="col-md-4">
-      <a routerLink="admin/users" class="btn btn-primary w-100 mb-3">Manage Users</a>
+      <a routerLink="/admin/users" class="btn btn-dark w-100 py-3 admin-tile">
+        <i class="bi bi-people me-2"></i>
+        Beheer gebruikers
+      </a>
     </div>
     <div class="col-md-4">
-      <a routerLink="admin/products" class="btn btn-primary w-100 mb-3">Manage Products</a>
+      <a routerLink="/admin/products" class="btn btn-dark w-100 py-3 admin-tile">
+        <i class="bi bi-box-seam me-2"></i>
+        Beheer producten
+      </a>
     </div>
     <div class="col-md-4">
-      <a routerLink="admin/orders" class="btn btn-primary w-100">Manage Orders</a>
+      <a routerLink="/admin/orders" class="btn btn-dark w-100 py-3 admin-tile">
+        <i class="bi bi-receipt me-2"></i>
+        Beheer bestellingen
+      </a>
     </div>
   </div>
 </div>

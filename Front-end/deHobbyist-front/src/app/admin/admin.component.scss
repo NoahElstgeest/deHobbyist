@@ -1,0 +1,17 @@
+:root { --brown: #6b4f3a; }
+.text-brown { color: var(--brown) !important; }
+
+.btn-dark { background-color: #000; border-color: #000; }
+.btn-dark:hover, .btn-dark:focus { background-color: #222; border-color: #222; }
+
+.admin-tile {
+  border-radius: .75rem;
+  box-shadow: 0 .25rem .75rem rgba(0,0,0,.08);
+  transition: transform .12s ease, box-shadow .12s ease;
+  text-transform: none;            /* behoudt leesbaarheid */
+  letter-spacing: .2px;
+}
+.admin-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 .75rem 1.25rem rgba(0,0,0,.12);
+}
